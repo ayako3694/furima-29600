@@ -11,7 +11,7 @@
 | first_name         | string | null: false                |
 | last_name_kana     | string | null: false                |
 | first_name_kana    | string | null: false                |
-| birth date         | date   | null: false                |
+| birth_date         | date   | null: false                |
 
 ### Association
 
@@ -21,7 +21,7 @@
 
 ## items テーブル
 
-| Column        | Type       | Options     |
+| Column        | Type       | Options                        |
 | --------------|------------|--------------------------------|
 | name          | string     | null: false                    |
 | info          | text       | null: false                    |
@@ -52,7 +52,7 @@
 - has_one :adress
 
 
-## adress テーブル
+## adresses テーブル
 
 | Column        | Type    | Options                        |
 | ------------- | --------| -------------------------------|
@@ -61,8 +61,8 @@
 | municipality  | string  | null: false                    |
 | address       | string  | null: false                    |
 | building_name | string  |                                |
-| phone_number  | string  | null: false                    |
-| items_id      | integer | null: false, foreign_key: true |
+| phone_number  | string  | null: false                    |て
+| buyer_id      | integer | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :buyer
