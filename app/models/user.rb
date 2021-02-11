@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
 # バリデーションの設定(空の文字列を保存させない為と一意性制約)
-validates :nick_name,               presence: true
+validates :nick_name,              presence: true
 validates :encrypted_password,     presence: true
 validates :last_name,              presence: true
 validates :first_name,             presence: true
