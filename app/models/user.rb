@@ -16,4 +16,6 @@ validates :birth_date,             presence: true
 # アソシエーション
 has_many :items
 has_many :buyers
+
+validates :nickname, presence: true
 end
