@@ -5,17 +5,25 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
 # バリデーションの設定(空の文字列を保存させない為と一意性制約)
-validates :nick_name,              presence: true
-validates :password,               format: {with: /\A[a-zA-Z0-9]+\z/} # 半角英数字混合の正規表現
-validates :encrypted_password,     presence: true
-validates :last_name,              presence: true, format: {with: /\A[ぁ-んァ-ン一-龥]/ } # ユーザー本名全角の正規表現
-validates :first_name,             presence: true, format: {with: /\A[ぁ-んァ-ン一-龥]/ } # ユーザー本名全角の正規表現
-validates :last_name_kana,         presence: true, format: {with: /\A[ァ-ヶー－]+\z/ } # フリガナ全角の正規表現
-validates :first_name_kana,        presence: true, format: {with: /\A[ァ-ヶー－]+\z/ } # フリガナ全角の正規表現
-validates :birth_date,             presence: true
 
+  with_options presence: true do
+    validates :nick_name
+    validates :birth_date
+    
+    with_options format: {with: /\A[ぁ-んァ-ン一-龥々]/ } do   # ユーザー本名全角の正規表現
+      validates :last_name
+      validates :first_name
+    end
 
-# アソシエーション
-has_many :items
-has_many :buyers
+    with_options format: {with: /\A[ァ-ヶー－]+\z/ } do   # フリガナ全角の正規表現
+      validates :last_name_kana
+      validates :first_name_kana
+    end
+    
+  end
+  validates :password,format: {with: /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i} # 半角英数字混合の正規表現
+
+  # アソシエーション
+  has_many :items
+  has_many :buyers
 end
