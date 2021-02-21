@@ -25,14 +25,11 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include("Email can't be blank")
       end
 
-    # email 一意性制約のテスト ▼
       it "重複したemailが存在する場合登録できないこと" do
         @user.save
         another_user = FactoryBot.build(:user, email: @user.email)
         another_user.valid?
-        expect(another_user.errors.full_messages).to include("Email has already been taken")
-        # expected "Password is invalid" to include "Email has already been taken"
-        
+        expect(another_user.errors.full_messages).to include("Email has already been taken")        
       end
 
     # emailは@が含まれていないと登録ができない
@@ -48,39 +45,34 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include("Password can't be blank")
       end
 
-    #パスワードは６文字以上であること →変更した
       it "passwordが5文字以下では登録できない" do
         @user.password = "12345"
         @user.valid?
         expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
       end
 
-      #パスワードは半角英数字混合であること
       it 'passwordが存在してもpassword_confirmationが空では登録できない' do
         @user.password_confirmation = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
       end
 
-      #passwordは半角英語のみでは登録できないこと
-      it 'asswordは半角英語のみでは登録できない' do
+      it 'passwordは半角英語のみでは登録できない' do
         @user.password = "aaaaaa"
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+        expect(@user.errors.full_messages).to include("Password 半角英数字混合で入力してください")
       end
 
-      #passwordは数字のみでは登録できないこと
       it 'passwordは数字のみでは登録できない' do
         @user.password = "123123"
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+        expect(@user.errors.full_messages).to include("Password 半角英数字混合で入力してください")
       end
 
-      #passwordは全角英数混合では登録できないこと
       it 'passwordは全角英数混合では登録できない' do
-        @user.password = "aaa111"
+        @user.password = "ああaa11"
         @user.valid?
-      expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+      expect(@user.errors.full_messages).to include("Password 半角英数字混合で入力してください")
       end
 
 
@@ -104,9 +96,9 @@ RSpec.describe User, type: :model do
       end
 
       it 'first_name_kanaが空では登録できない' do
-        @user.first_name = ''
+        @user.first_name_kana = ''
         @user.valid?
-        expect(@user.errors.full_messages).to include("First name can't be blank", "First name is invalid")
+        expect(@user.errors.full_messages).to include("First name kana can't be blank")
       end
 
       it 'birth_dayが空では登録できない' do
@@ -116,7 +108,6 @@ RSpec.describe User, type: :model do
       end
 
 
-    # 本人確認名前全角入力のテスト ▼
 
       it 'first_nameが全角入力でなければ登録できないこと' do
         @user.first_name = "ｱｲｳｴｵ"
@@ -130,7 +121,6 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include("Last name is invalid")
       end
 
-    # 本人確認カタカナ全角入力のテスト ▼
 
       it 'first_name_kanaが全角カタカナでなければ登録できないこと' do
       @user.first_name_kana = "あいうえお"
